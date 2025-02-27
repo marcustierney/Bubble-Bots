@@ -1,6 +1,6 @@
 class Over extends Phaser.Scene {
     constructor() {
-        super('over');
+        super('overScene');
     }
 
     create() {

@@ -29,13 +29,16 @@ class Play extends Phaser.Scene {
         const bgLayer = map.createLayer('Background', tileset, 0, 0)
         const terrain = map.createLayer('Terrain', tileset, 0, 0)
         const lava = map.createLayer('Lava', tileset, 0, 0)
+        const door = map.createLayer('Door', tileset, 0, 0) 
 
         terrain.setCollisionByProperty({ collides: true })
-        lava.setCollisionByProperty({ collides: true }) // Lava collision
+        lava.setCollisionByProperty({ collides: true }) 
+        door.setCollisionByProperty({ collides: true })
 
         // Add slime
         this.slime = this.physics.add.sprite(30, 30, 'slime', 0)
         this.slime.body.setCollideWorldBounds(true)
+
         this.slime.body.setGravityY(this.GRAVITY) // Apply gravity
         this.slime.body.setMaxVelocity(this.VEL, 400) // Max speed
         this.slime.body.setDamping(true) // Enable damping
@@ -59,6 +62,7 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.slime, terrain)
         this.physics.add.collider(this.slime, lava, this.respawnSlime, null, this)
+        this.physics.add.collider(this.slime, door, this.levelComplete, null, this)
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -88,6 +92,10 @@ class Play extends Phaser.Scene {
         }
     }
     respawnSlime() {
-        this.scene.start('over')
+        this.scene.start('overScene')
+    }
+
+    levelComplete() {
+        this.scene.start('completeScene')
     }
 }
