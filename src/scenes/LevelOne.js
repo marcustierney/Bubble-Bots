@@ -1,6 +1,6 @@
-class Play extends Phaser.Scene {
+class LevelOne extends Phaser.Scene {
     constructor() {
-        super('playScene')
+        super('LevelOneScene')
     }
 
     init() {
@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         this.ACCEL = 120   // Acceleration for movement
         this.DRAG = 700    // Drag Speed
         this.GRAVITY = 500 // Gravity strength
+        this.E1VEL = 25
     }
 
     preload() {
@@ -17,7 +18,7 @@ class Play extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         })
-
+        this.load.image('enemy1', 'enemy1.png')
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'level1.json')  
     }
@@ -29,11 +30,15 @@ class Play extends Phaser.Scene {
         const bgLayer = map.createLayer('Background', tileset, 0, 0)
         const terrain = map.createLayer('Terrain', tileset, 0, 0)
         const lava = map.createLayer('Lava', tileset, 0, 0)
-        const door = map.createLayer('Door', tileset, 0, 0) 
+        const door = map.createLayer('Door', tileset, 0, 0)
+        const paths = map.createLayer('EnemyPaths', tileset, 0, 0) 
 
         terrain.setCollisionByProperty({ collides: true })
         lava.setCollisionByProperty({ collides: true }) 
         door.setCollisionByProperty({ collides: true })
+        paths.setCollisionByProperty({ collides: true })
+
+        const Enemy1Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy1Spawn')
 
         // Add slime
         this.slime = this.physics.add.sprite(30, 30, 'slime', 0)
@@ -45,6 +50,12 @@ class Play extends Phaser.Scene {
 
         // Apply strong drag to stop movement faster
         this.slime.body.setDragX(this.DRAG)
+
+        //Enemy1
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy1', 0).setScale(0.5)
+        this.enemy1.body.setCollideWorldBounds(true)
+        this.enemy1.body.setGravityY(this.GRAVITY)
+        this.enemy1.body.setVelocityX(this.E1VEL)
 
         // Slime animation
         this.anims.create({
@@ -63,6 +74,9 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.slime, terrain)
         this.physics.add.collider(this.slime, lava, this.respawnSlime, null, this)
         this.physics.add.collider(this.slime, door, this.levelComplete, null, this)
+        this.physics.add.collider(this.enemy1, terrain)
+        this.physics.add.collider(this.enemy1, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.slime, this.enemy1, this.respawnSlime, null, this)
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -98,4 +112,13 @@ class Play extends Phaser.Scene {
     levelComplete() {
         this.scene.start('completeScene')
     }
+   enemyMovement() {
+        if (this.E1VEL > 0) {
+            this.E1VEL = -this.E1VEL
+        }
+        else if (this.E1VEL < 0) {
+            this.E1VEL = -this.E1VEL
+        }
+        this.enemy1.setVelocityX(this.E1VEL)        
+   }
 }
