@@ -1,7 +1,7 @@
 let config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 800,
+    width: 320,
+    height: 240,
     render: {
       pixelArt: true
     },
@@ -11,6 +11,7 @@ let config = {
           debug: true,
       } 
     },
+    zoom: 2,
     scene: [Menu, Play, Over, Credit]
   }
 
