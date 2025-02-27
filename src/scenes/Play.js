@@ -4,7 +4,11 @@ class Play extends Phaser.Scene {
     }
 
     init() {
-        this.VEL = 100  // slime velocity constant
+        this.VEL = 90      // Max horizontal speed
+        this.JUMP_VEL = -290 // Jump height
+        this.ACCEL = 120   // Acceleration for movement
+        this.DRAG = 700    // Drag Speed
+        this.GRAVITY = 500 // Gravity strength
     }
 
     preload() {
@@ -19,24 +23,28 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        //tilemap stuff
-        const map = this.add.tilemap('tilemapJSON') 
-        const tileset = map.addTilesetImage('tileset', 'tilesetImage')  
+        // Tilemap setup
+        const map = this.add.tilemap('tilemapJSON')
+        const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer = map.createLayer('Background', tileset, 0, 0)
         const terrain = map.createLayer('Terrain', tileset, 0, 0)
 
         terrain.setCollisionByProperty({ collides: true })
 
-        //const slimeSpawn = map.findObject('Spawns', (obj) => obj.name === 'slimeSpawn')
-
-        // add slime
+        // Add slime
         this.slime = this.physics.add.sprite(30, 30, 'slime', 0)
         this.slime.body.setCollideWorldBounds(true)
+        this.slime.body.setGravityY(this.GRAVITY) // Apply gravity
+        this.slime.body.setMaxVelocity(this.VEL, 400) // Max speed
+        this.slime.body.setDamping(true) // Enable damping
 
-        // slime animation
+        // Apply strong drag to stop movement faster
+        this.slime.body.setDragX(this.DRAG)
+
+        // Slime animation
         this.anims.create({
             key: 'jiggle',
-            frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 1}),
+            frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 1 }),
             frameRate: 8,
             repeat: -1
         })
@@ -49,26 +57,31 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.slime, terrain)
 
-        // input
+        // Input
         this.cursors = this.input.keyboard.createCursorKeys()
     }
 
     update() {
-        // slime movement
-        this.direction = new Phaser.Math.Vector2(0)
-        if(this.cursors.left.isDown) {
-            this.direction.x = -1
-        } else if(this.cursors.right.isDown) {
-            this.direction.x = 1
+        // Adjust drag based on whether the slime is in the air
+        if (this.slime.body.blocked.down) {
+            this.slime.body.setDragX(this.DRAG) // Strong drag on ground
+        } else {
+            this.slime.body.setDragX(200) // Lighter drag in air for better control
         }
 
-        if(this.cursors.up.isDown) {
-            this.direction.y = -1
-        } else if(this.cursors.down.isDown) {
-            this.direction.y = 1
+        
+        if (this.cursors.left.isDown) {
+            this.slime.body.setAccelerationX(-this.ACCEL)
+        } else if (this.cursors.right.isDown) {
+            this.slime.body.setAccelerationX(this.ACCEL)
+        } else {
+            this.slime.body.setAccelerationX(0) // Stops acceleration when no key is pressed
+            this.slime.body.setVelocityX(0) // Instantly stop movement when key is released
         }
 
-        this.direction.normalize()
-        this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+        // Jumping 
+        if (this.cursors.up.isDown && this.slime.body.blocked.down) {
+            this.slime.body.setVelocityY(this.JUMP_VEL) 
+        }
     }
 }
