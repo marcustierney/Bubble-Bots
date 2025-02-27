@@ -28,8 +28,10 @@ class Play extends Phaser.Scene {
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer = map.createLayer('Background', tileset, 0, 0)
         const terrain = map.createLayer('Terrain', tileset, 0, 0)
+        const lava = map.createLayer('Lava', tileset, 0, 0)
 
         terrain.setCollisionByProperty({ collides: true })
+        lava.setCollisionByProperty({ collides: true }) // Lava collision
 
         // Add slime
         this.slime = this.physics.add.sprite(30, 30, 'slime', 0)
@@ -56,6 +58,7 @@ class Play extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
         this.physics.add.collider(this.slime, terrain)
+        this.physics.add.collider(this.slime, lava, this.respawnSlime, null, this)
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -83,5 +86,8 @@ class Play extends Phaser.Scene {
         if (this.cursors.up.isDown && this.slime.body.blocked.down) {
             this.slime.body.setVelocityY(this.JUMP_VEL) 
         }
+    }
+    respawnSlime() {
+        this.scene.start('over')
     }
 }
