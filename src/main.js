@@ -25,4 +25,4 @@ let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
 // reserve keyboard bindings
-let keyFIRE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyESC
+let keyFIRE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyESC, keyR, keyM
