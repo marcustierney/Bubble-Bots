@@ -1,7 +1,7 @@
 let config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 800,
+    width: 320,
+    height: 240,
     render: {
       pixelArt: true
     },
@@ -11,7 +11,8 @@ let config = {
           debug: true,
       } 
     },
-    scene: [Menu, Play, Over, Credit]
+    zoom: 2,
+    scene: [Menu, LevelOne, Over, Credit, Complete]
   }
 
 let game = new Phaser.Game(config)
@@ -24,4 +25,4 @@ let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
 // reserve keyboard bindings
-let keyFIRE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyESC
+let keyFIRE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyESC, keyR, keyM

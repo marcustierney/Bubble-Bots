@@ -35,14 +35,8 @@ class Menu extends Phaser.Scene {
         }
         
         // display menu text
-        //this.background = this.add.tileSprite(0, 0, 800, 800, 'menu-background').setOrigin(0, 0)
-        this.add.image(game.config.width - 50, -5, 'arrows').setOrigin(1, 0).setScale(.6)
-        this.add.image(520, 25, 'esc').setOrigin(1, 0).setScale(.6)
-        this.add.image(300, 25, 'spacebar').setOrigin(1, 0).setScale(.6)
-        this.add.text(185, 190, 'Start Game', tutorialConfig).setOrigin(0.5)
-        //this.add.text(410, 190, 'Pause Game', tutorialConfig).setOrigin(0.5)
-        this.add.text(640, 190, 'Move Character', tutorialConfig).setOrigin(0.5)
-        this.add.text(game.config.width/2, game.config.height/2, 'Bubble Bots', menuConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2, game.config.height/2, 'Bubble Bots', menuConfig).setOrigin(0.5).setScale(0.5)
+        this.add.text(game.config.width/2, game.config.height/1.5, 'Press SPACE to Play', menuConfig).setOrigin(0.5).setScale(0.3)
         menuConfig.backgroundColor = '#00FF00'
         menuConfig.color = '#000'
        
@@ -58,7 +52,7 @@ class Menu extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           // play
-          this.scene.start('playScene')    
+          this.scene.start('LevelOneScene')    
         }
         if (Phaser.Input.Keyboard.JustDown(keyDOWN)) {
           // credit
