@@ -21,7 +21,7 @@ class Menu extends Phaser.Scene {
     create() {
         // sprites
         this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2);
-        this.add.image(game.config.width/2, game.config.height/2, 'robot-menu').setOrigin(0.53,0.45);
+        this.add.image(game.config.width/2, game.config.height/2, 'robot-menu').setOrigin(0.53,0.456);
 
 
         let menuConfig = {
@@ -35,7 +35,7 @@ class Menu extends Phaser.Scene {
 
         let tutorialConfig = {
             fontFamily: 'Courier',
-            fontSize: '50px',
+            fontSize: '48px',
             fontStyle: 'bold',
             color: '#e754ca',
             align: 'right',
@@ -43,10 +43,10 @@ class Menu extends Phaser.Scene {
         }
         
         // display menu text
-        this.add.text(game.config.width/1.4, game.config.height/3.5, 'Bubble', menuConfig).setOrigin(0.5).setScale(0.5)
-        this.add.text(game.config.width/1.4, game.config.height/2.5, 'Bots', menuConfig).setOrigin(0.5).setScale(0.5)
-        this.add.text(game.config.width/1.4, game.config.height/1.2, 'Press SPACE to Play', tutorialConfig).setOrigin(0.5).setScale(0.3)
-        this.add.text(game.config.width/1.4, game.config.height/1.1, 'and C for Credits', tutorialConfig).setOrigin(0.5).setScale(0.3)
+        this.add.text(game.config.width/1.35, game.config.height/3.5, 'Bubble', menuConfig).setOrigin(0.5).setScale(0.5)
+        this.add.text(game.config.width/1.35, game.config.height/2.5, 'Bots', menuConfig).setOrigin(0.5).setScale(0.5)
+        this.add.text(game.config.width/1.37, game.config.height/1.2, 'Press SPACE to Play', tutorialConfig).setOrigin(0.5).setScale(0.3)
+        this.add.text(game.config.width/1.37, game.config.height/1.1, 'and C for Credits', tutorialConfig).setOrigin(0.5).setScale(0.3)
         menuConfig.backgroundColor = '#00FF00'
         menuConfig.color = '#000'
        
