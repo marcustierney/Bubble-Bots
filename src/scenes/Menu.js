@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
         this.load.image('spacebar', './assets/spacebar.png')
         this.load.image('enemy-left', './assets/enemy-l-128.png')
         this.load.image('enemy-right', './assets/enemy-r-128.png')
+        this.load.image('robot-menu', './assets/menu-cover.png')
         this.load.spritesheet('character', 'character-sheet.png', {
             frameWidth: 32,
             fameHeight: 32
