@@ -5,11 +5,11 @@ class Credit extends Phaser.Scene {
     
     create() {
         //define keys
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)  
+        keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)  
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyUP)) {
+        if (Phaser.Input.Keyboard.JustDown(keyM)) {
             // menu
             this.scene.start('menuScene')    
           }
