@@ -15,6 +15,9 @@ class Menu extends Phaser.Scene {
         //     frameWidth: 32,
         //     fameHeight: 32
         // })
+
+        // load bitmap font
+        this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
     }
     
 
@@ -23,32 +26,11 @@ class Menu extends Phaser.Scene {
         this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2);
         this.add.image(game.config.width/2, game.config.height/2, 'robot-menu').setOrigin(0.53,0.456);
 
-
-        let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '80px',
-            fontStyle: 'bold',
-            color: '#e754ca',
-            align: 'right',
-            fixedWidth: 0
-        }
-
-        let tutorialConfig = {
-            fontFamily: 'Courier',
-            fontSize: '48px',
-            fontStyle: 'bold',
-            color: '#e754ca',
-            align: 'right',
-            fixedWidth: 0
-        }
-        
         // display menu text
-        this.add.text(game.config.width/1.35, game.config.height/3.5, 'Bubble', menuConfig).setOrigin(0.5).setScale(0.5)
-        this.add.text(game.config.width/1.35, game.config.height/2.5, 'Bots', menuConfig).setOrigin(0.5).setScale(0.5)
-        this.add.text(game.config.width/1.37, game.config.height/1.2, 'Press SPACE to Play', tutorialConfig).setOrigin(0.5).setScale(0.3)
-        this.add.text(game.config.width/1.37, game.config.height/1.1, 'and C for Credits', tutorialConfig).setOrigin(0.5).setScale(0.3)
-        menuConfig.backgroundColor = '#00FF00'
-        menuConfig.color = '#000'
+        this.add.bitmapText(game.config.width/1.35, game.config.height/3.5, 'bubble-font', 'BUBBLE', 45).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.37, game.config.height/1.2, 'bubble-font', 'Press SPACE to Play', 17).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.37, game.config.height/1.1, 'bubble-font', 'and C for Credits', 17).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     
