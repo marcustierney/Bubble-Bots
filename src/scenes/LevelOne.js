@@ -18,7 +18,7 @@ class LevelOne extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         })
-        this.load.image('enemy1', 'enemy1.png')
+        //this.load.image('enemy1', 'enemy1.png')
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'level1.json')  
     }
@@ -52,7 +52,7 @@ class LevelOne extends Phaser.Scene {
         this.slime.body.setDragX(this.DRAG)
 
         //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy1', 0).setScale(0.5)
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.6)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
         this.enemy1.body.setVelocityX(this.E1VEL)
