@@ -52,7 +52,7 @@ class LevelOne extends Phaser.Scene {
         this.slime.body.setDragX(this.DRAG)
 
         //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.6)
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.55)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
         this.enemy1.body.setVelocityX(this.E1VEL)
