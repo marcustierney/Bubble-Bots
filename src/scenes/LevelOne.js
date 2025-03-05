@@ -11,6 +11,9 @@ class LevelOne extends Phaser.Scene {
         this.GRAVITY = 500 // Gravity strength
         this.E1VEL = 25
         this.DIR = 200
+        this.startingScore = 200000
+        this.score = this.startingScore
+        this.highScore = this.registry.get('highScore') || 0
     }
 
     preload() {
@@ -26,6 +29,29 @@ class LevelOne extends Phaser.Scene {
     }
 
     create() {
+        // Score Display
+        this.scoreText = this.add.text(260, 10, `${this.score}`, {
+            fontSize: '14px',
+            fill: '#ffffff'
+        }).setScrollFactor(0).setDepth(10)
+        
+        // High Score Display
+        this.highScoreText = this.add.text(100, 10, `HI SCORE-${this.highScore}`, {
+            fontSize: '14px',
+            fill: '#FFF220'
+        }).setScrollFactor(0).setDepth(10); // Align to the right
+
+        // Timer to decrease score
+        this.scoreTimer = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.score = Math.max(0, this.score - 1000);
+                this.scoreText.setText(`${this.score}`);
+            },
+            callbackScope: this,
+            loop: true
+        });
+
         // Tilemap setup
         const map = this.add.tilemap('tilemapJSON')
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
@@ -54,7 +80,7 @@ class LevelOne extends Phaser.Scene {
         this.slime.body.setDragX(this.DRAG)
 
         //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.55)
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.3)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
         this.enemy1.body.setVelocityX(this.E1VEL)
@@ -87,8 +113,26 @@ class LevelOne extends Phaser.Scene {
         this.balls = this.physics.add.group()
         this.physics.add.collider(this.balls, terrain, (ball) => ball.destroy())
         this.physics.add.collider(this.balls, this.enemy1, (ball, enemy) => {
+            this.score += 100
+            this.scoreText.setText(`${this.score}`)
             ball.destroy()
             enemy.destroy()
+            const plus100Text = this.add.text(enemy.x, enemy.y - 20, '+100', {
+                fontSize: '10px',
+                fill: '#FFF220',
+                fontStyle: 'bold'
+            }).setOrigin(0.5, 0.5); // Position the text above the enemy
+        
+            // Fade out the "+100" text and destroy it after a delay
+            this.tweens.add({
+                targets: plus100Text,
+                alpha: 0,
+                y: plus100Text.y - 30, // Move the text up
+                duration: 500,
+                onComplete: () => {
+                    plus100Text.destroy(); // Destroy the text after the animation
+                }
+            });
         })
         this.physics.world.on('worldbounds', (body) => {
             if (body.gameObject) {
@@ -134,10 +178,18 @@ class LevelOne extends Phaser.Scene {
         
     }
     respawnSlime() {
+        this.score = this.startingScore; // Reset score on death
         this.scene.start('overScene')
     }
 
     levelComplete() {
+        // Update the high score if the current score is higher
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            this.registry.set('highScore', this.highScore); // Store the new high score
+            this.highScoreText.setText(`HI SCORE-${this.highScore}`);
+        }
+        this.registry.set('finalScore', this.score);
         this.scene.start('completeScene')
     }
     enemyMovement() {
@@ -150,7 +202,7 @@ class LevelOne extends Phaser.Scene {
         this.enemy1.setVelocityX(this.E1VEL)        
    }
    shootBall() {
-        let ball = this.balls.create(this.slime.x, this.slime.y, 'ball')
+        let ball = this.balls.create(this.slime.x, this.slime.y, 'ball').setScale(0.3)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false
