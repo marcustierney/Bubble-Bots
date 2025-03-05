@@ -10,6 +10,7 @@ class LevelOne extends Phaser.Scene {
         this.DRAG = 700    // Drag Speed
         this.GRAVITY = 500 // Gravity strength
         this.E1VEL = 25
+        this.DIR = 200
     }
 
     preload() {
@@ -21,6 +22,7 @@ class LevelOne extends Phaser.Scene {
         //this.load.image('enemy1', 'enemy1.png')
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'level1.json')  
+        this.load.image('ball', 'ball.png')
     }
 
     create() {
@@ -80,6 +82,19 @@ class LevelOne extends Phaser.Scene {
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
+        this.shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+
+        this.balls = this.physics.add.group()
+        this.physics.add.collider(this.balls, terrain, (ball) => ball.destroy())
+        this.physics.add.collider(this.balls, this.enemy1, (ball, enemy) => {
+            ball.destroy()
+            enemy.destroy()
+        })
+        this.physics.world.on('worldbounds', (body) => {
+            if (body.gameObject) {
+                body.gameObject.destroy()
+            }
+        })
     }
 
     update() {
@@ -104,6 +119,19 @@ class LevelOne extends Phaser.Scene {
         if (this.cursors.up.isDown && this.slime.body.blocked.down) {
             this.slime.body.setVelocityY(this.JUMP_VEL) 
         }
+        // Attack
+        if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
+            this.shootBall()
+        }
+        if (this.cursors.left.isDown) {
+            this.DIR = -200
+            console.log('left')
+        } 
+        else if (this.cursors.right.isDown) {
+            this.DIR = 200
+            console.log('right')
+        }
+        
     }
     respawnSlime() {
         this.scene.start('overScene')
@@ -112,7 +140,7 @@ class LevelOne extends Phaser.Scene {
     levelComplete() {
         this.scene.start('completeScene')
     }
-   enemyMovement() {
+    enemyMovement() {
         if (this.E1VEL > 0) {
             this.E1VEL = -this.E1VEL
         }
@@ -121,4 +149,11 @@ class LevelOne extends Phaser.Scene {
         }
         this.enemy1.setVelocityX(this.E1VEL)        
    }
+   shootBall() {
+        let ball = this.balls.create(this.slime.x, this.slime.y, 'ball')
+        ball.body.setCollideWorldBounds(true)
+        ball.body.onWorldBounds = true
+        ball.body.allowGravity = false
+        ball.setVelocityX(this.DIR)
+    }
 }
