@@ -18,14 +18,19 @@ class LevelOne extends Phaser.Scene {
 
     preload() {
         this.load.path = './assets/'
-        this.load.spritesheet('slime', 'slime.png', {
-            frameWidth: 16,
-            frameHeight: 16
-        })
-        //this.load.image('enemy1', 'enemy1.png')
+        // this.load.spritesheet('robot', 'robot.png', {
+        //     frameWidth: 16,
+        //     frameHeight: 16
+        // })
+        this.load.spritesheet('robot', 'character-sheet-128.png', {
+            frameWidth: 128,
+            frameHeight: 128,
+          })
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'level1.json')  
         this.load.image('ball', 'ball.png')
+        this.load.image('enemy-left', 'enemy-l-128.png')
+        this.load.image('enemy-right', 'enemy-r-128.png')
     }
 
     create() {
@@ -68,43 +73,58 @@ class LevelOne extends Phaser.Scene {
 
         const Enemy1Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy1Spawn')
 
-        // Add slime
-        this.slime = this.physics.add.sprite(30, 30, 'slime', 0)
-        this.slime.body.setCollideWorldBounds(true)
+        // Add robot
+        this.robot = this.physics.add.sprite(30, 30, 'robot', 0)
+        this.robot.body.setCollideWorldBounds(true)
 
-        this.slime.body.setGravityY(this.GRAVITY) // Apply gravity
-        this.slime.body.setMaxVelocity(this.VEL, 400) // Max speed
-        this.slime.body.setDamping(true) // Enable damping
+        this.robot.body.setGravityY(this.GRAVITY) // Apply gravity
+        this.robot.body.setMaxVelocity(this.VEL, 400) // Max speed
+        this.robot.body.setDamping(true) // Enable damping
 
         // Apply strong drag to stop movement faster
-        this.slime.body.setDragX(this.DRAG)
+        this.robot.body.setDragX(this.DRAG)
 
         //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.3)
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.55)
+        this.enemy1.body.setSize(82,78)
+        this.enemy1.body.setOffset(0,0)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
         this.enemy1.body.setVelocityX(this.E1VEL)
-
-        // Slime animation
+    
+        // robot animation
+        // this.anims.create({
+        //     key: 'jiggle',
+        //     frames: this.anims.generateFrameNumbers('robot', { start: 0, end: 1 }),
+        //     frameRate: 8,
+        //     repeat: -1
+        // })
+        // this.robot.anims.play('jiggle')
+        // robot animations
         this.anims.create({
-            key: 'jiggle',
-            frames: this.anims.generateFrameNumbers('slime', { start: 0, end: 1 }),
-            frameRate: 8,
-            repeat: -1
+          key: 'robot-right',
+          frameRate: 2,
+          repeat: -1,
+          frames: this.anims.generateFrameNumbers('robot', {start: 0, end: 3}),
         })
-        this.slime.anims.play('jiggle')
+        this.anims.create({
+          key: 'robot-left',
+          frameRate: 2,
+          repeat: -1,
+          frames: this.anims.generateFrameNumbers('robot', {start: 7, end: 4}),
+        })
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-        this.cameras.main.startFollow(this.slime, true, 0.25, 0.25)
+        this.cameras.main.startFollow(this.robot, true, 0.25, 0.25)
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
 
-        this.physics.add.collider(this.slime, terrain)
-        this.physics.add.collider(this.slime, lava, this.respawnSlime, null, this)
-        this.physics.add.collider(this.slime, door, this.levelComplete, null, this)
+        this.physics.add.collider(this.robot, terrain)
+        this.physics.add.collider(this.robot, lava, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, door, this.levelComplete, null, this)
         this.physics.add.collider(this.enemy1, terrain)
         this.physics.add.collider(this.enemy1, paths, this.enemyMovement, null, this)
-        this.physics.add.collider(this.slime, this.enemy1, this.respawnSlime, null, this)
+        this.physics.add.collider(this.robot, this.enemy1, this.respawnRobot, null, this)
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -142,26 +162,29 @@ class LevelOne extends Phaser.Scene {
     }
 
     update() {
-        // Adjust drag based on whether the slime is in the air
-        if (this.slime.body.blocked.down) {
-            this.slime.body.setDragX(this.DRAG) // Strong drag on ground
+        // Adjust drag based on whether the robot is in the air
+        if (this.robot.body.blocked.down) {
+            this.robot.body.setDragX(this.DRAG) // Strong drag on ground
         } else {
-            this.slime.body.setDragX(200) // Lighter drag in air for better control
+            this.robot.body.setDragX(200) // Lighter drag in air for better control
         }
 
         
         if (this.cursors.left.isDown) {
-            this.slime.body.setAccelerationX(-this.ACCEL)
+            this.robot.body.setAccelerationX(-this.ACCEL)
+            this.robot.anims.play('robot-left', true)
         } else if (this.cursors.right.isDown) {
-            this.slime.body.setAccelerationX(this.ACCEL)
+            this.robot.body.setAccelerationX(this.ACCEL)
+            this.robot.anims.play('robot-right', true)
         } else {
-            this.slime.body.setAccelerationX(0) // Stops acceleration when no key is pressed
-            this.slime.body.setVelocityX(0) // Instantly stop movement when key is released
+            this.robot.body.setAccelerationX(0) // Stops acceleration when no key is pressed
+            this.robot.body.setVelocityX(0) // Instantly stop movement when key is released
         }
 
+
         // Jumping 
-        if (this.cursors.up.isDown && this.slime.body.blocked.down) {
-            this.slime.body.setVelocityY(this.JUMP_VEL) 
+        if (this.cursors.up.isDown && this.robot.body.blocked.down) {
+            this.robot.body.setVelocityY(this.JUMP_VEL) 
         }
         // Attack
         if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
@@ -177,7 +200,7 @@ class LevelOne extends Phaser.Scene {
         }
         
     }
-    respawnSlime() {
+    respawnRobot() {
         this.score = this.startingScore; // Reset score on death
         this.scene.start('overScene')
     }
@@ -199,10 +222,10 @@ class LevelOne extends Phaser.Scene {
         else if (this.E1VEL < 0) {
             this.E1VEL = -this.E1VEL
         }
-        this.enemy1.setVelocityX(this.E1VEL)        
+        this.enemy1.setVelocityX(this.E1VEL)  
    }
    shootBall() {
-        let ball = this.balls.create(this.slime.x, this.slime.y, 'ball').setScale(0.3)
+        let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.3)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false

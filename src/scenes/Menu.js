@@ -23,20 +23,6 @@ class Menu extends Phaser.Scene {
     
 
     create() {
-        // robot animations
-        this.anims.create({
-          key: 'robot-right',
-          frameRate: 8,
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('robot', {start: 0, end: 3}),
-        })
-        this.anims.create({
-          key: 'robot-left',
-          frameRate: 8,
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('robot', {start: 7, end: 4}),
-        })
-
         // sprites
         this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2);
         this.add.image(game.config.width/2, game.config.height/2, 'robot-menu').setOrigin(0.53,0.456);
