@@ -22,10 +22,11 @@ class LevelOne extends Phaser.Scene {
         //     frameWidth: 16,
         //     frameHeight: 16
         // })
-        this.load.spritesheet('robot', 'character-sheet-128.png', {
-            frameWidth: 128,
-            frameHeight: 128,
-          })
+        this.load.spritesheet('robot-sheet', 'robot-sheet.png', {
+            frameWidth: 35,
+            frameHeight: 57
+        })
+ 
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'level1.json')  
         this.load.image('ball', 'ball.png')
@@ -74,12 +75,69 @@ class LevelOne extends Phaser.Scene {
         const Enemy1Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy1Spawn')
 
         // Add robot
-        this.robot = this.physics.add.sprite(30, 30, 'robot', 0)
+        this.robot = this.physics.add.sprite(30, 30, 'robot-sheet', 0).setScale(.9)
         this.robot.body.setCollideWorldBounds(true)
-
+        this.robot.body.setSize(32,50)
         this.robot.body.setGravityY(this.GRAVITY) // Apply gravity
         this.robot.body.setMaxVelocity(this.VEL, 400) // Max speed
         this.robot.body.setDamping(true) // Enable damping
+
+        // Robot animations
+        this.anims.create({
+            key: 'walk-right',
+            frameRate: 10, 
+            repeat: -1,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 0,
+                end: 3
+            })
+        })
+        this.anims.create({
+            key: 'walk-left',
+            frameRate: 10, 
+            repeat: -1,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 4,
+                end: 7
+            })
+        })
+        this.anims.create({
+            key: 'idle-left',
+            frameRate: 10, 
+            repeat: -1,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 7,
+                end: 7
+            })
+        })
+        this.anims.create({
+            key: 'idle-right',
+            frameRate: 10, 
+            repeat: -1,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 0,
+                end: 0
+            })
+        })
+        this.anims.create({
+            key: 'shoot-right',
+            frameRate: 1, 
+            repeat: 0,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 1,
+                end: 1
+            })
+        })
+        this.anims.create({
+            key: 'shoot-left',
+            frameRate: 10, 
+            repeat: 0,
+            frames: this.anims.generateFrameNames('robot-sheet', {
+                start: 6,
+                end: 6
+            })
+        })
+
 
         // Apply strong drag to stop movement faster
         this.robot.body.setDragX(this.DRAG)
@@ -91,28 +149,6 @@ class LevelOne extends Phaser.Scene {
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
         this.enemy1.body.setVelocityX(this.E1VEL)
-    
-        // robot animation
-        // this.anims.create({
-        //     key: 'jiggle',
-        //     frames: this.anims.generateFrameNumbers('robot', { start: 0, end: 1 }),
-        //     frameRate: 8,
-        //     repeat: -1
-        // })
-        // this.robot.anims.play('jiggle')
-        // robot animations
-        this.anims.create({
-          key: 'robot-right',
-          frameRate: 2,
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('robot', {start: 0, end: 3}),
-        })
-        this.anims.create({
-          key: 'robot-left',
-          frameRate: 2,
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('robot', {start: 7, end: 4}),
-        })
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
         this.cameras.main.startFollow(this.robot, true, 0.25, 0.25)
@@ -169,35 +205,43 @@ class LevelOne extends Phaser.Scene {
             this.robot.body.setDragX(200) // Lighter drag in air for better control
         }
 
-        
+        let robotMovement = 'walk'
         if (this.cursors.left.isDown) {
             this.robot.body.setAccelerationX(-this.ACCEL)
-            this.robot.anims.play('robot-left', true)
+            this.lastDirection = 'left'
         } else if (this.cursors.right.isDown) {
             this.robot.body.setAccelerationX(this.ACCEL)
-            this.robot.anims.play('robot-right', true)
+            this.lastDirection = 'right'
         } else {
             this.robot.body.setAccelerationX(0) // Stops acceleration when no key is pressed
             this.robot.body.setVelocityX(0) // Instantly stop movement when key is released
+            robotMovement = 'idle'
         }
-
 
         // Jumping 
         if (this.cursors.up.isDown && this.robot.body.blocked.down) {
             this.robot.body.setVelocityY(this.JUMP_VEL) 
         }
-        // Attack
-        if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
-            this.shootBall()
+        if (this.cursors.right.isDown) {
+            this.DIR = 200
+            console.log('right')
+            this.lastDirection = 'right'
         }
         if (this.cursors.left.isDown) {
             this.DIR = -200
             console.log('left')
-        } 
-        else if (this.cursors.right.isDown) {
-            this.DIR = 200
-            console.log('right')
+            this.lastDirection = 'left'
         }
+        // Attack
+        if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {
+            this.shootBall()
+        }
+        if (this.shootKey.isDown) {
+            this.robot.play('shoot-' + this.lastDirection, true)
+        }
+        else {
+            this.robot.play(robotMovement + '-' + this.lastDirection, true)
+        } 
         
     }
     respawnRobot() {
@@ -225,7 +269,7 @@ class LevelOne extends Phaser.Scene {
         this.enemy1.setVelocityX(this.E1VEL)  
    }
    shootBall() {
-        let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.3)
+        let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.1)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false
