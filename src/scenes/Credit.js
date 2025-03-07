@@ -12,7 +12,7 @@ class Credit extends Phaser.Scene {
         this.add.bitmapText(game.config.width/2, game.config.height/2.2, 'square-font', 'Bubble/Square fonts from DaFont', 18).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'square-font', 'Press M for Menu', 20).setOrigin(0.5)
 
-        //define keys
+        // define keys
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)  
     }
 

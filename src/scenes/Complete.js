@@ -4,33 +4,19 @@ class Complete extends Phaser.Scene {
     }
 
     create() {
+        // add background
+        this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2)
+
         const finalScore = this.registry.get('finalScore')
         const highScore = this.registry.get('highScore')
-        this.add.text(width / 2, height / 4, 'Level Complete', {
-            fontSize: '32px',
-            fill: '#ff0000',
-            align: 'center'
-        }).setOrigin(0.5);
-        this.add.text(width / 2, height / 2, `SCORE ${finalScore}`, {
-            fontSize: '24px',
-            fill: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5);
-        this.add.text(width / 2, height / 1.5, `HI SCORE ${highScore}`, {
-            fontSize: '24px',
-            fill: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5);
-        this.add.text(width / 2, height / 1.2, 'Press R to Restart', {
-            fontSize: '16px',
-            fill: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5);
-        this.add.text(width / 2, height / 1.1, 'Press M for Menu', {
-            fontSize: '16px',
-            fill: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5);
+        this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'LEVEL COMPLETE', 35).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/2.4, 'score-font', `SCORE ${finalScore}`, 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/2, 'score-font', `HI SCORE ${highScore}`, 18).setOrigin(0.5)
+
+        this.add.bitmapText(game.config.width/2, game.config.height/1.4, 'square-font', 'Press R to Restart', 20).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'square-font', 'Press M for Menu', 20).setOrigin(0.5)
+        
+        // define keys
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
     }
