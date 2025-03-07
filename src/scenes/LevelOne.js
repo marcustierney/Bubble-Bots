@@ -18,10 +18,6 @@ class LevelOne extends Phaser.Scene {
 
     preload() {
         this.load.path = './assets/'
-        // this.load.spritesheet('robot', 'robot.png', {
-        //     frameWidth: 16,
-        //     frameHeight: 16
-        // })
         this.load.spritesheet('robot-sheet', 'robot-sheet.png', {
             frameWidth: 35,
             frameHeight: 57
@@ -42,10 +38,7 @@ class LevelOne extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(10)
         
         // High Score Display
-        this.highScoreText = this.add.text(100, 10, `HI SCORE-${this.highScore}`, {
-            fontSize: '14px',
-            fill: '#FFF220'
-        }).setScrollFactor(0).setDepth(10); // Align to the right
+        this.highScoreText = this.add.bitmapText(100, 10, 'score-font', `HI SCORE-${this.highScore}`, 18).setScrollFactor(0).setDepth(10); // Align to the right
 
         // Timer to decrease score
         this.scoreTimer = this.time.addEvent({
@@ -269,7 +262,7 @@ class LevelOne extends Phaser.Scene {
         this.enemy1.setVelocityX(this.E1VEL)  
    }
    shootBall() {
-        let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.1)
+        let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.2)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false

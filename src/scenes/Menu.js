@@ -19,6 +19,7 @@ class Menu extends Phaser.Scene {
         // load bitmap font
         this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
         this.load.bitmapFont('square-font', 'assets/square-font.png', 'assets/square-font.xml')
+        this.load.bitmapFont('score-font', 'assets/score.png', 'assets/score.xml')
     }
     
 
