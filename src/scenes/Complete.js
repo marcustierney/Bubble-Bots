@@ -7,6 +7,7 @@ class Complete extends Phaser.Scene {
         // add background
         this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2)
 
+        // level complete text
         const finalScore = this.registry.get('finalScore')
         const highScore = this.registry.get('highScore')
         this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'LEVEL COMPLETE', 35).setOrigin(0.5)

@@ -4,22 +4,21 @@ class Menu extends Phaser.Scene {
     }
     preload() {
         // load images/tile sprites
-        this.load.image('arrows', './assets/arrows.png')
-        this.load.image('esc', './assets/esc.png')
-        this.load.image('spacebar', './assets/spacebar.png')
         this.load.image('enemy-left', './assets/enemy-l-128.png')
         this.load.image('enemy-right', './assets/enemy-r-128.png')
         this.load.image('robot-menu', './assets/menu-cover.png')
         this.load.image('bubble-menu', './assets/bubble-cover.png')
-        this.load.spritesheet('robot', './assets/character-sheet-128.png', {
-          frameWidth: 16,
-          frameHeight: 16,
-        })
 
         // load bitmap font
         this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
         this.load.bitmapFont('square-font', 'assets/square-font.png', 'assets/square-font.xml')
         this.load.bitmapFont('score-font', 'assets/score.png', 'assets/score.xml')
+        this.load.bitmapFont('over-font', 'assets/over.png', 'assets/over.xml')
+
+        // load music
+        this.load.audio('splash-music', './assets/splash.mp3')
+        this.load.audio('shoot-music', './assets/shoot.mp3')
+        
     }
     
 
