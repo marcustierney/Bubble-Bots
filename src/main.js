@@ -12,7 +12,7 @@ let config = {
       } 
     },
     zoom: 2,
-    scene: [Menu, LevelOne, Over, Credit, Complete]
+    scene: [Menu, LevelOne, Over, Credit, Complete, Direction]
   }
 
 let game = new Phaser.Game(config)
@@ -25,4 +25,4 @@ let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
 // reserve keyboard bindings
-let keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyR, keyM, keyC 
+let keyUP, keyDOWN, keyLEFT, keyRIGHT, keySPACE, keyR, keyM, keyC, keyD 

@@ -30,6 +30,8 @@ class LevelOne extends Phaser.Scene {
         this.load.image('enemy-right', 'enemy-r-128.png')
         this.load.audio('splash-music', './assets/splash.mp3')
         this.load.audio('shoot-music', './assets/shoot.mp3')
+        this.load.audio('background-music', './assets/background.mp3')
+        this.load.audio('background-music1', './assets/background1.mp3')
     }
 
     create() {
@@ -56,8 +58,10 @@ class LevelOne extends Phaser.Scene {
         // Music
         this.splashMusic = this.sound.add('splash-music', {volume: 0.2})
         this.splashMusicPlaying = false
-        this.shootMusic = this.sound.add('shoot-music', {volume: 0.2})
+        this.shootMusic = this.sound.add('shoot-music', {volume: 0.3})
         this.shootMusicPlaying = false
+        this.backgroundMusic = this.sound.add('background-music', {volume: 0.15, loop: true})
+        this.backgroundMusic.play()
 
         // Tilemap setup
         const map = this.add.tilemap('tilemapJSON')
@@ -249,6 +253,7 @@ class LevelOne extends Phaser.Scene {
     }
     respawnRobot() {
         this.score = this.startingScore; // Reset score on death
+        this.backgroundMusic.stop()
         this.splashMusic.play()
         this.splashMusicPlaying = true;
         this.scene.start('overScene')

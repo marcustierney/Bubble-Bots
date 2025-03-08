@@ -18,6 +18,8 @@ class Menu extends Phaser.Scene {
         // load music
         this.load.audio('splash-music', './assets/splash.mp3')
         this.load.audio('shoot-music', './assets/shoot.mp3')
+        this.load.audio('background-music', './assets/background.mp3')
+        this.load.audio('background-music1', './assets/background1.mp3')
         
     }
     
@@ -31,11 +33,11 @@ class Menu extends Phaser.Scene {
         this.add.bitmapText(game.config.width/1.35, game.config.height/3.5, 'bubble-font', 'BUBBLE', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.42, game.config.height/1.25, 'square-font', 'Press SPACE to Play', 18).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.4, game.config.height/1.14, 'square-font', 'and C for Credits', 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.4, game.config.height/1.1, 'square-font', 'and D for Directions', 18).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     
-        keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         
     }
     update() {
@@ -43,9 +45,9 @@ class Menu extends Phaser.Scene {
           // play
           this.scene.start('LevelOneScene')    
         }
-        if (Phaser.Input.Keyboard.JustDown(keyC)) {
-          // credit
-          this.scene.start('creditScene')    
+        if (Phaser.Input.Keyboard.JustDown(keyD)) {
+          // direction
+          this.scene.start('directionScene')    
         }
       }
 }

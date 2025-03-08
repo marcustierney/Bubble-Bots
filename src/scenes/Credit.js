@@ -10,7 +10,7 @@ class Credit extends Phaser.Scene {
         // display credits text
         this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'CREDITS', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/2.2, 'square-font', 'Bubble/Square fonts from DaFont', 18).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/1.8, 'square-font', 'Splash sfx from PixaBay', 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.8, 'square-font', 'Sound effects from PixaBay', 18).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'square-font', 'Press M for Menu', 20).setOrigin(0.5)
 
         // define keys
