@@ -9,7 +9,7 @@ class LevelOne extends Phaser.Scene {
         this.ACCEL = 120   // Acceleration for movement
         this.DRAG = 700    // Drag Speed
         this.GRAVITY = 500 // Gravity strength
-        this.E1VEL = 25
+        this.EVEL = 25
         this.DIR = 200
         this.startingScore = 200000
         this.score = this.startingScore
@@ -78,7 +78,9 @@ class LevelOne extends Phaser.Scene {
         paths.setCollisionByProperty({ collides: true })
 
         const Enemy1Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy1Spawn')
-
+        const Enemy2Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy2Spawn')
+        const Enemy3Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy3Spawn')
+        
         // Add robot
         this.robot = this.physics.add.sprite(30, 30, 'robot-sheet', 0).setScale(.9)
         this.robot.body.setCollideWorldBounds(true)
@@ -148,12 +150,35 @@ class LevelOne extends Phaser.Scene {
         this.robot.body.setDragX(this.DRAG)
 
         //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(0.55)
+        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(.55)
         this.enemy1.body.setSize(82,78)
         this.enemy1.body.setOffset(0,0)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
-        this.enemy1.body.setVelocityX(this.E1VEL)
+        this.enemy1.body.setVelocityX(25)
+
+        //Enemy2
+        this.enemy2 = this.physics.add.sprite(Enemy2Spawn.x, Enemy2Spawn.y, 'enemy-left', 0).setScale(.55)
+        this.enemy2.body.setSize(82, 78);
+        this.enemy2.body.setOffset(0, 0);
+        this.enemy2.body.setCollideWorldBounds(true);
+        this.enemy2.body.setGravityY(this.GRAVITY);
+        this.enemy2.body.setVelocityX(25)
+
+        //Enemy3
+        this.enemy3 = this.physics.add.sprite(Enemy3Spawn.x, Enemy3Spawn.y, 'enemy-left', 0).setScale(.5)
+        this.enemy3.body.setSize(82, 78);
+        this.enemy3.body.setOffset(0, 0);
+        this.enemy2.body.setCollideWorldBounds(true);
+        this.enemy3.body.setGravityY(this.GRAVITY);
+        this.enemy3.body.setVelocityX(25)
+
+        this.enemy3ShootTimer = this.time.addEvent({
+            delay: 3000, // Every 3 seconds
+            callback: this.shootEnemy3Balls,
+            callbackScope: this,
+            loop: true
+        });
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
         this.cameras.main.startFollow(this.robot, true, 0.25, 0.25)
@@ -164,8 +189,23 @@ class LevelOne extends Phaser.Scene {
         this.physics.add.collider(this.robot, lava, this.respawnRobot, null, this)
         this.physics.add.collider(this.robot, door, this.levelComplete, null, this)
         this.physics.add.collider(this.enemy1, terrain)
-        this.physics.add.collider(this.enemy1, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy2, terrain)
+        this.physics.add.collider(this.enemy3, terrain)
         this.physics.add.collider(this.robot, this.enemy1, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, this.enemy2, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, this.enemy3, this.respawnRobot, null, this)
+        this.physics.add.collider(this.enemy1, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy2, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy3, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy1, paths, () => {
+            this.enemyMovement(this.enemy1);
+        });
+        this.physics.add.collider(this.enemy2, paths, () => {
+            this.enemyMovement(this.enemy2);
+        }); 
+        this.physics.add.collider(this.enemy3, paths, () => {
+            this.enemyMovement(this.enemy3);
+        });
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -173,28 +213,12 @@ class LevelOne extends Phaser.Scene {
 
         this.balls = this.physics.add.group()
         this.physics.add.collider(this.balls, terrain, (ball) => ball.destroy())
-        this.physics.add.collider(this.balls, this.enemy1, (ball, enemy) => {
-            this.score += 100
-            this.scoreText.setText(`${this.score}`)
-            ball.destroy()
-            enemy.destroy()
-            const plus100Text = this.add.text(enemy.x, enemy.y - 20, '+100', {
-                fontSize: '10px',
-                fill: '#FFF220',
-                fontStyle: 'bold'
-            }).setOrigin(0.5, 0.5); // Position the text above the enemy
-        
-            // Fade out the "+100" text and destroy it after a delay
-            this.tweens.add({
-                targets: plus100Text,
-                alpha: 0,
-                y: plus100Text.y - 30, // Move the text up
-                duration: 500,
-                onComplete: () => {
-                    plus100Text.destroy(); // Destroy the text after the animation
-                }
-            });
-        })
+
+        this.physics.add.collider(this.balls, this.enemy1, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy2, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy3, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.robot, this.robotHit, null, this)
+
         this.physics.world.on('worldbounds', (body) => {
             if (body.gameObject) {
                 body.gameObject.destroy()
@@ -229,12 +253,10 @@ class LevelOne extends Phaser.Scene {
         }
         if (this.cursors.right.isDown) {
             this.DIR = 200
-            console.log('right')
             this.lastDirection = 'right'
         }
         if (this.cursors.left.isDown) {
             this.DIR = -200
-            console.log('left')
             this.lastDirection = 'left'
         }
         // Attack
@@ -248,9 +270,18 @@ class LevelOne extends Phaser.Scene {
         }
         else {
             this.robot.play(robotMovement + '-' + this.lastDirection, true)
-        } 
-        
+        }
+        this.balls.children.each((ball) => { //Loops through each ball and destorys after 200 pixels
+            if (Math.abs(ball.x - ball.startX) > 200) {
+                ball.destroy();
+            }
+        }, this); 
+
+        if (this.enemy3.active === false) { // Check if enemy3 is destroyed 
+            this.enemy3ShootTimer.remove()
+        }
     }
+
     respawnRobot() {
         this.score = this.startingScore; // Reset score on death
         this.backgroundMusic.stop()
@@ -261,6 +292,7 @@ class LevelOne extends Phaser.Scene {
 
     levelComplete() {
         // Update the high score if the current score is higher
+        console.log(this.enemy3.x)
         if (this.score > this.highScore) {
             this.highScore = this.score;
             this.registry.set('highScore', this.highScore); // Store the new high score
@@ -269,20 +301,62 @@ class LevelOne extends Phaser.Scene {
         this.registry.set('finalScore', this.score);
         this.scene.start('completeScene')
     }
-    enemyMovement() {
-        if (this.E1VEL > 0) {
-            this.E1VEL = -this.E1VEL
-        }
-        else if (this.E1VEL < 0) {
-            this.E1VEL = -this.E1VEL
-        }
-        this.enemy1.setVelocityX(this.E1VEL)  
-   }
+    
    shootBall() {
         let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.2)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false
         ball.setVelocityX(this.DIR)
+
+        ball.startX = this.robot.x
+    }
+    enemyMovement(enemy) {
+        if (this.EVEL > 0) {
+            enemy.setTexture('enemy-left')
+        }
+        else if (this.EVEL < 0) {
+            enemy.setTexture('enemy-right')
+        }
+        this.EVEL = -this.EVEL
+        enemy.body.setVelocityX(this.EVEL)  
+   }
+    enemyHit (ball, enemy) {
+        this.score += 100;
+        this.scoreText.setText(`${this.score}`);
+        ball.destroy();
+        enemy.destroy();
+        const plus100Text = this.add.text(enemy.x, enemy.y - 20, '+100', { //Add 100 points text
+            fontSize: '10px',
+            fill: '#FFF220',
+            fontStyle: 'bold'
+        }).setOrigin(0.5, 0.5);
+    
+        this.tweens.add({
+            targets: plus100Text,
+            alpha: 0,
+            y: plus100Text.y - 30,
+            duration: 500,
+            onComplete: () => {
+                plus100Text.destroy();
+            }
+        });
+    }
+    shootEnemy3Balls() {
+        // Shoot a ball to the right
+        let ballRight = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        ballRight.body.setCollideWorldBounds(true);
+        ballRight.body.allowGravity = false;
+        ballRight.setVelocityX(150); 
+        ballRight.startX = this.enemy3.x;
+        // Shoot a ball to the left
+        let ballLeft = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        ballLeft.body.setCollideWorldBounds(true);
+        ballLeft.body.allowGravity = false;
+        ballLeft.setVelocityX(-150); 
+        ballLeft.startX = this.enemy3.x
+    }
+    robotHit() { //If player is hit by enemy ball
+        this.respawnRobot();
     }
 }

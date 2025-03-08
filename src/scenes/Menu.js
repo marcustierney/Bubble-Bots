@@ -8,7 +8,7 @@ class Menu extends Phaser.Scene {
         this.load.image('enemy-right', './assets/enemy-r-128.png')
         this.load.image('robot-menu', './assets/menu-cover.png')
         this.load.image('bubble-menu', './assets/bubble-cover.png')
-
+        this.load.image('ball-enemy', './assets/ball-enemy.png')
         // load bitmap font
         this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
         this.load.bitmapFont('square-font', 'assets/square-font.png', 'assets/square-font.xml')
