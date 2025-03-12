@@ -76,7 +76,7 @@ class LevelOne extends Phaser.Scene {
 
         //Enemy1
         this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(.55)
-        this.enemy1.body.setSize(82,78)
+        this.enemy1.body.setSize(63,70)
         this.enemy1.body.setOffset(0,0)
         this.enemy1.body.setCollideWorldBounds(true)
         this.enemy1.body.setGravityY(this.GRAVITY)
@@ -84,7 +84,7 @@ class LevelOne extends Phaser.Scene {
 
         //Enemy2
         this.enemy2 = this.physics.add.sprite(Enemy2Spawn.x, Enemy2Spawn.y, 'enemy-left', 0).setScale(.55)
-        this.enemy2.body.setSize(82, 78);
+        this.enemy2.body.setSize(63,70);
         this.enemy2.body.setOffset(0, 0);
         this.enemy2.body.setCollideWorldBounds(true);
         this.enemy2.body.setGravityY(this.GRAVITY);
@@ -92,7 +92,7 @@ class LevelOne extends Phaser.Scene {
 
         //Enemy3
         this.enemy3 = this.physics.add.sprite(Enemy3Spawn.x, Enemy3Spawn.y, 'enemy-left', 0).setScale(.5)
-        this.enemy3.body.setSize(82, 78);
+        this.enemy3.body.setSize(63,70);
         this.enemy3.body.setOffset(0, 0);
         this.enemy2.body.setCollideWorldBounds(true);
         this.enemy3.body.setGravityY(this.GRAVITY);
