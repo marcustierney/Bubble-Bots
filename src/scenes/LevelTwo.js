@@ -1,6 +1,6 @@
-class LevelOne extends Phaser.Scene {
+class LevelTwo extends Phaser.Scene {
     constructor() {
-        super('LevelOneScene')
+        super('LevelTwoScene')
     }
 
     init() {
@@ -46,7 +46,7 @@ class LevelOne extends Phaser.Scene {
         this.backgroundMusic.play()
 
         // Tilemap setup
-        const map = this.add.tilemap('tilemapJSON')
+        const map = this.add.tilemap('tilemap2JSON')
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
         const bgLayer = map.createLayer('Background', tileset, 0, 0)
         const terrain = map.createLayer('Terrain', tileset, 0, 0)
@@ -59,9 +59,11 @@ class LevelOne extends Phaser.Scene {
         door.setCollisionByProperty({ collides: true })
         paths.setCollisionByProperty({ collides: true })
 
-        const Enemy1Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy1Spawn')
-        const Enemy2Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy2Spawn')
-        const Enemy3Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy3Spawn')
+        const Enemy4Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy4Spawn')
+        const Enemy5Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy5Spawn')
+        const Enemy6Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy6Spawn')
+        const Platform1Spawn = map.findObject('Platforms', (obj) => obj.name === 'Platform1')
+        const Platform2Spawn = map.findObject('Platforms', (obj) => obj.name === 'Platform2')
         
         // Add robot
         this.robot = this.physics.add.sprite(30, 30, 'robot-sheet', 0).setScale(.9)
@@ -74,36 +76,48 @@ class LevelOne extends Phaser.Scene {
         // Apply strong drag to stop movement faster
         this.robot.body.setDragX(this.DRAG)
 
-        //Enemy1
-        this.enemy1 = this.physics.add.sprite(Enemy1Spawn.x, Enemy1Spawn.y, 'enemy-left', 0).setScale(.55)
-        this.enemy1.body.setSize(82,78)
-        this.enemy1.body.setOffset(0,0)
-        this.enemy1.body.setCollideWorldBounds(true)
-        this.enemy1.body.setGravityY(this.GRAVITY)
-        this.enemy1.body.setVelocityX(25)
+        //Enemy4
+        this.enemy4 = this.physics.add.sprite(Enemy4Spawn.x, Enemy4Spawn.y, 'enemy-left', 0).setScale(.55)
+        this.enemy4.body.setSize(82,78)
+        this.enemy4.body.setOffset(0,0)
+        this.enemy4.body.setCollideWorldBounds(true)
+        this.enemy4.body.setGravityY(this.GRAVITY)
+        this.enemy4.body.setVelocityX(25)
 
         //Enemy2
-        this.enemy2 = this.physics.add.sprite(Enemy2Spawn.x, Enemy2Spawn.y, 'enemy-left', 0).setScale(.55)
-        this.enemy2.body.setSize(82, 78);
-        this.enemy2.body.setOffset(0, 0);
-        this.enemy2.body.setCollideWorldBounds(true);
-        this.enemy2.body.setGravityY(this.GRAVITY);
-        this.enemy2.body.setVelocityX(25)
+        this.enemy5 = this.physics.add.sprite(Enemy5Spawn.x, Enemy5Spawn.y, 'enemy-left', 0).setScale(.55)
+        this.enemy5.body.setSize(82, 78);
+        this.enemy5.body.setOffset(0, 0);
+        this.enemy5.body.setCollideWorldBounds(true);
+        this.enemy5.body.setGravityY(this.GRAVITY);
+        this.enemy5.body.setVelocityX(25)
 
-        //Enemy3
-        this.enemy3 = this.physics.add.sprite(Enemy3Spawn.x, Enemy3Spawn.y, 'enemy-left', 0).setScale(.5)
-        this.enemy3.body.setSize(82, 78);
-        this.enemy3.body.setOffset(0, 0);
-        this.enemy2.body.setCollideWorldBounds(true);
-        this.enemy3.body.setGravityY(this.GRAVITY);
-        this.enemy3.body.setVelocityX(25)
+        //Enemy6
+        this.enemy6 = this.physics.add.sprite(Enemy6Spawn.x, Enemy6Spawn.y, 'enemy-left', 0).setScale(.5)
+        this.enemy6.body.setSize(82, 78);
+        this.enemy6.body.setOffset(0, 0);
+        this.enemy6.body.setCollideWorldBounds(true);
+        this.enemy6.body.setGravityY(this.GRAVITY);
+        this.enemy6.body.setVelocityX(25)
 
-        this.enemy3ShootTimer = this.time.addEvent({
+        this.enemy6ShootTimer = this.time.addEvent({
             delay: 3000, // Every 3 seconds
             callback: this.shootEnemy3Balls,
             callbackScope: this,
             loop: true
         });
+
+        // Platform1
+        this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(0.3);
+        this.platform1.body.setImmovable(true)
+        this.platform1.body.setAllowGravity(false)
+        this.platform1.body.setVelocityX(50)        
+
+        //Platform2
+        this.platform2 = this.physics.add.sprite(Platform2Spawn.x, Platform2Spawn.y, 'platform').setScale(0.3);
+        this.platform2.body.setImmovable(true)
+        this.platform2.body.setAllowGravity(false)
+        this.platform2.body.setVelocityX(50)
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
         this.cameras.main.startFollow(this.robot, true, 0.25, 0.25)
@@ -113,23 +127,33 @@ class LevelOne extends Phaser.Scene {
         this.physics.add.collider(this.robot, terrain)
         this.physics.add.collider(this.robot, lava, this.respawnRobot, null, this)
         this.physics.add.collider(this.robot, door, this.levelComplete, null, this)
-        this.physics.add.collider(this.enemy1, terrain)
-        this.physics.add.collider(this.enemy2, terrain)
-        this.physics.add.collider(this.enemy3, terrain)
-        this.physics.add.collider(this.robot, this.enemy1, this.respawnRobot, null, this)
-        this.physics.add.collider(this.robot, this.enemy2, this.respawnRobot, null, this)
-        this.physics.add.collider(this.robot, this.enemy3, this.respawnRobot, null, this)
-        this.physics.add.collider(this.enemy1, paths, this.enemyMovement, null, this)
-        this.physics.add.collider(this.enemy2, paths, this.enemyMovement, null, this)
-        this.physics.add.collider(this.enemy3, paths, this.enemyMovement, null, this)
-        this.physics.add.collider(this.enemy1, paths, () => {
-            this.enemyMovement(this.enemy1);
+        //this.physics.add.collider(this.platform1, paths, this.platformMovement, null, this)
+        //this.physics.add.collider(this.platform2, paths, this.platformMovement, null, this)
+        this.physics.add.collider(this.enemy4, terrain)
+        this.physics.add.collider(this.enemy5, terrain)
+        this.physics.add.collider(this.enemy6, terrain)
+        this.physics.add.collider(this.robot, this.platform1)
+        this.physics.add.collider(this.robot, this.platform2)
+        this.physics.add.collider(this.robot, this.enemy4, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, this.enemy5, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, this.enemy6, this.respawnRobot, null, this)
+        this.physics.add.collider(this.enemy4, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy5, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy6, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy4, paths, () => {
+            this.enemyMovement(this.enemy4);
         });
-        this.physics.add.collider(this.enemy2, paths, () => {
-            this.enemyMovement(this.enemy2);
+        this.physics.add.collider(this.enemy5, paths, () => {
+            this.enemyMovement(this.enemy5);
         }); 
-        this.physics.add.collider(this.enemy3, paths, () => {
-            this.enemyMovement(this.enemy3);
+        this.physics.add.collider(this.enemy6, paths, () => {
+            this.enemyMovement(this.enemy6);
+        });
+        this.physics.add.collider(this.platform1, paths, () => {
+            this.platformMovement(this.platform1)
+        });
+        this.physics.add.collider(this.platform2, paths, () => {
+            this.platformMovement(this.platform2)
         });
 
         // Input
@@ -139,9 +163,9 @@ class LevelOne extends Phaser.Scene {
         this.balls = this.physics.add.group()
         this.physics.add.collider(this.balls, terrain, (ball) => ball.destroy())
 
-        this.physics.add.collider(this.balls, this.enemy1, this.enemyHit, null, this)
-        this.physics.add.collider(this.balls, this.enemy2, this.enemyHit, null, this)
-        this.physics.add.collider(this.balls, this.enemy3, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy4, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy5, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy6, this.enemyHit, null, this)
         this.physics.add.collider(this.balls, this.robot, this.robotHit, null, this)
 
         this.physics.world.on('worldbounds', (body) => {
@@ -202,8 +226,8 @@ class LevelOne extends Phaser.Scene {
             }
         }, this); 
 
-        if (this.enemy3.active === false) { // Check if enemy3 is destroyed 
-            this.enemy3ShootTimer.remove()
+        if (this.enemy6.active === false) { // Check if enemy3 is destroyed 
+            this.enemy6ShootTimer.remove()
         }
     }
 
@@ -212,19 +236,19 @@ class LevelOne extends Phaser.Scene {
         this.backgroundMusic.stop()
         this.splashMusic.play()
         this.splashMusicPlaying = true;
-        this.scene.start('overScene')
+        this.scene.start('over2Scene')
     }
 
     levelComplete() {
         // Update the high score if the current score is higher
-        console.log(this.enemy3.x)
+        console.log(this.enemy6.x)
         if (this.score > this.highScore) {
             this.highScore = this.score;
             this.registry.set('highScore', this.highScore); // Store the new high score
             this.highScoreText.setText(`HI SCORE-${this.highScore}`);
         }
         this.registry.set('finalScore', this.score);
-        this.scene.start('complete1Scene')
+        this.scene.start('complete2Scene')
     }
     
    shootBall() {
@@ -267,21 +291,25 @@ class LevelOne extends Phaser.Scene {
             }
         });
     }
-    shootEnemy3Balls() {
+    shootEnemy6Balls() {
         // Shoot a ball to the right
-        let ballRight = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        let ballRight = this.balls.create(this.enemy6.x, this.enemy6.y, 'ball-enemy').setScale(0.2);
         ballRight.body.setCollideWorldBounds(true);
         ballRight.body.allowGravity = false;
         ballRight.setVelocityX(150); 
-        ballRight.startX = this.enemy3.x;
+        ballRight.startX = this.enemy6.x;
         // Shoot a ball to the left
-        let ballLeft = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        let ballLeft = this.balls.create(this.enemy6.x, this.enemy6.y, 'ball-enemy').setScale(0.2);
         ballLeft.body.setCollideWorldBounds(true);
         ballLeft.body.allowGravity = false;
         ballLeft.setVelocityX(-150); 
-        ballLeft.startX = this.enemy3.x
+        ballLeft.startX = this.enemy6.x
     }
     robotHit() { //If player is hit by enemy ball
         this.respawnRobot();
     }
+    platformMovement(platform) {
+        this.EVEL = -this.EVEL
+        platform.body.setVelocityX(this.EVEL)  
+   }
 }
