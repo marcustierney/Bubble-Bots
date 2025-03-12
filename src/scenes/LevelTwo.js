@@ -13,7 +13,7 @@ class LevelTwo extends Phaser.Scene {
         this.DIR = 200
         this.startingScore = 200000
         this.score = this.startingScore
-        this.highScore = this.registry.get('highScore') || 0
+        this.highScore2 = this.registry.get('highScore2') || 0
     }
 
     create() {
@@ -24,7 +24,7 @@ class LevelTwo extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(10)
         
         // High Score Display
-        this.highScoreText = this.add.bitmapText(100, 10, 'score-font', `HI SCORE-${this.highScore}`, 18).setScrollFactor(0).setDepth(10); // Align to the right
+        this.highScore2Text = this.add.bitmapText(100, 10, 'score-font', `HI SCORE-${this.highScore2}`, 18).setScrollFactor(0).setDepth(10); // Align to the right
 
         // Timer to decrease score
         this.scoreTimer = this.time.addEvent({
@@ -315,10 +315,10 @@ class LevelTwo extends Phaser.Scene {
 
     levelComplete() {
         // Update the high score if the current score is higher
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.registry.set('highScore', this.highScore); // Store the new high score
-            this.highScoreText.setText(`HI SCORE-${this.highScore}`);
+        if (this.score > this.highScore2) {
+            this.highScore2 = this.score;
+            this.registry.set('highScore2', this.highScore2); // Store the new high score
+            this.highScore2Text.setText(`HI SCORE-${this.highScore2}`);
         }
         this.registry.set('finalScore', this.score);
         this.scene.start('complete2Scene')

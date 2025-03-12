@@ -9,10 +9,10 @@ class Complete1 extends Phaser.Scene {
 
         // level complete text
         const finalScore = this.registry.get('finalScore')
-        const highScore = this.registry.get('highScore')
+        const highScore1 = this.registry.get('highScore1')
         this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'LEVEL COMPLETE', 35).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/2.4, 'score-font', `SCORE ${finalScore}`, 18).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/2, 'score-font', `HI SCORE ${highScore}`, 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/2, 'score-font', `HI SCORE ${highScore1}`, 18).setOrigin(0.5)
 
         this.add.bitmapText(game.config.width/2, game.config.height/1.6, 'square-font', 'Press SPACE To Continue', 20).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/1.4, 'square-font', 'Press R to Restart', 20).setOrigin(0.5)

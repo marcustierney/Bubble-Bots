@@ -13,7 +13,7 @@ class LevelOne extends Phaser.Scene {
         this.DIR = 200
         this.startingScore = 200000
         this.score = this.startingScore
-        this.highScore = this.registry.get('highScore') || 0
+        this.highScore1 = this.registry.get('highScore1') || 0
     }
 
     create() {
@@ -24,7 +24,7 @@ class LevelOne extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(10)
         
         // High Score Display
-        this.highScoreText = this.add.bitmapText(100, 10, 'score-font', `HI SCORE-${this.highScore}`, 18).setScrollFactor(0).setDepth(10); // Align to the right
+        this.highScore1Text = this.add.bitmapText(100, 10, 'score-font', `HI SCORE-${this.highScore1}`, 18).setScrollFactor(0).setDepth(10); // Align to the right
 
         // Timer to decrease score
         this.scoreTimer = this.time.addEvent({
@@ -218,10 +218,10 @@ class LevelOne extends Phaser.Scene {
     levelComplete() {
         // Update the high score if the current score is higher
         console.log(this.enemy3.x)
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.registry.set('highScore', this.highScore); // Store the new high score
-            this.highScoreText.setText(`HI SCORE-${this.highScore}`);
+        if (this.score > this.highScore1) {
+            this.highScore1 = this.score;
+            this.registry.set('highScore1', this.highScore1); // Store the new high score
+            this.highScore1Text.setText(`HI SCORE-${this.highScore1}`);
         }
         this.registry.set('finalScore', this.score);
         this.scene.start('complete1Scene')

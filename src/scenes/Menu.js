@@ -43,7 +43,7 @@ class Menu extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           // play
-          this.scene.start('Load2Scene')    
+          this.scene.start('Load1Scene')    
         }
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
           // direction
