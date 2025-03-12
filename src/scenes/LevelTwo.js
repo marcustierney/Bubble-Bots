@@ -62,6 +62,7 @@ class LevelTwo extends Phaser.Scene {
         const Enemy4Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy4Spawn')
         const Enemy5Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy5Spawn')
         const Enemy6Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy6Spawn')
+        const Enemy7Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy7Spawn')
         const Platform1Spawn = map.findObject('Platforms', (obj) => obj.name === 'Platform1')
         const Platform2Spawn = map.findObject('Platforms', (obj) => obj.name === 'Platform2')
         
@@ -84,7 +85,7 @@ class LevelTwo extends Phaser.Scene {
         this.enemy4.body.setGravityY(this.GRAVITY)
         this.enemy4.body.setVelocityX(25)
 
-        //Enemy2
+        //Enemy5
         this.enemy5 = this.physics.add.sprite(Enemy5Spawn.x, Enemy5Spawn.y, 'enemy-left', 0).setScale(.55)
         this.enemy5.body.setSize(82, 78);
         this.enemy5.body.setOffset(0, 0);
@@ -102,10 +103,18 @@ class LevelTwo extends Phaser.Scene {
 
         this.enemy6ShootTimer = this.time.addEvent({
             delay: 3000, // Every 3 seconds
-            callback: this.shootEnemy3Balls,
+            callback: this.shootEnemy6Balls,
             callbackScope: this,
             loop: true
         });
+
+        //Enemy7
+        this.enemy7 = this.physics.add.sprite(Enemy7Spawn.x, Enemy7Spawn.y, 'enemy-left', 0).setScale(.5)
+        this.enemy7.body.setSize(82, 78);
+        this.enemy7.body.setOffset(0, 0);
+        this.enemy7.body.setCollideWorldBounds(true);
+        this.enemy7.body.setGravityY(this.GRAVITY);
+        this.enemy7.body.setVelocityX(25)
 
         // Platform1
         this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(0.3);
@@ -132,14 +141,17 @@ class LevelTwo extends Phaser.Scene {
         this.physics.add.collider(this.enemy4, terrain)
         this.physics.add.collider(this.enemy5, terrain)
         this.physics.add.collider(this.enemy6, terrain)
+        this.physics.add.collider(this.enemy7, terrain)
         this.physics.add.collider(this.robot, this.platform1)
         this.physics.add.collider(this.robot, this.platform2)
         this.physics.add.collider(this.robot, this.enemy4, this.respawnRobot, null, this)
         this.physics.add.collider(this.robot, this.enemy5, this.respawnRobot, null, this)
         this.physics.add.collider(this.robot, this.enemy6, this.respawnRobot, null, this)
+        this.physics.add.collider(this.robot, this.enemy7, this.respawnRobot, null, this)
         this.physics.add.collider(this.enemy4, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy5, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy6, paths, this.enemyMovement, null, this)
+        this.physics.add.collider(this.enemy7, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy4, paths, () => {
             this.enemyMovement(this.enemy4);
         });
@@ -148,6 +160,9 @@ class LevelTwo extends Phaser.Scene {
         }); 
         this.physics.add.collider(this.enemy6, paths, () => {
             this.enemyMovement(this.enemy6);
+        });
+        this.physics.add.collider(this.enemy7, paths, () => {
+            this.enemyMovement(this.enemy7);
         });
         this.physics.add.collider(this.platform1, paths, () => {
             this.platformMovement(this.platform1)
@@ -166,6 +181,7 @@ class LevelTwo extends Phaser.Scene {
         this.physics.add.collider(this.balls, this.enemy4, this.enemyHit, null, this)
         this.physics.add.collider(this.balls, this.enemy5, this.enemyHit, null, this)
         this.physics.add.collider(this.balls, this.enemy6, this.enemyHit, null, this)
+        this.physics.add.collider(this.balls, this.enemy7, this.enemyHit, null, this)
         this.physics.add.collider(this.balls, this.robot, this.robotHit, null, this)
 
         this.physics.world.on('worldbounds', (body) => {
@@ -241,7 +257,6 @@ class LevelTwo extends Phaser.Scene {
 
     levelComplete() {
         // Update the high score if the current score is higher
-        console.log(this.enemy6.x)
         if (this.score > this.highScore) {
             this.highScore = this.score;
             this.registry.set('highScore', this.highScore); // Store the new high score
