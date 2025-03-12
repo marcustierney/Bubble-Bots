@@ -6,7 +6,7 @@ class Complete1 extends Phaser.Scene {
     create() {
         // add background
         this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2)
-
+        this.registry.set("OneComplete", 1); // Mark Level One as completed
         // level complete text
         const finalScore = this.registry.get('finalScore')
         const highScore1 = this.registry.get('highScore1')

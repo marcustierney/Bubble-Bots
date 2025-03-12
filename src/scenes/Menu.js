@@ -35,24 +35,22 @@ class Menu extends Phaser.Scene {
         this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.42, game.config.height/1.25, 'square-font', 'Press SPACE to Play', 18).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.4, game.config.height/1.1, 'square-font', 'and D for Directions', 18).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.4, game.config.height/1.45, 'square-font', 'L for Level Select', 18).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
-        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
         
     }
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+        /*if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           // play
           this.scene.start('Load1Scene')    
-        }
+        }*/
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
           // direction
           this.scene.start('directionScene')    
         }
-        if (Phaser.Input.Keyboard.JustDown(keyL)) {
+        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           // level select
           this.scene.start('LevelSelectScene')    
         }
