@@ -64,7 +64,7 @@ class LevelOne extends Phaser.Scene {
         const Enemy3Spawn = map.findObject('Spawns', (obj) => obj.name === 'Enemy3Spawn')
         
         // Add robot
-        this.robot = this.physics.add.sprite(30, 30, 'robot-sheet', 0).setScale(.9)
+        this.robot = this.physics.add.sprite(30, 210, 'robot-sheet', 0).setScale(.9)
         this.robot.body.setCollideWorldBounds(true)
         this.robot.body.setSize(32,50)
         this.robot.body.setGravityY(this.GRAVITY) // Apply gravity

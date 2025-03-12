@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
         this.load.image('robot-menu', './assets/menu-cover.png')
         this.load.image('bubble-menu', './assets/bubble-cover.png')
         this.load.image('ball-enemy', './assets/ball-enemy.png')
+        this.load.image('select-icon', './assets/select-icon.png')
         // load bitmap font
         this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
         this.load.bitmapFont('square-font', 'assets/square-font.png', 'assets/square-font.xml')
@@ -34,10 +35,12 @@ class Menu extends Phaser.Scene {
         this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.42, game.config.height/1.25, 'square-font', 'Press SPACE to Play', 18).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.4, game.config.height/1.1, 'square-font', 'and D for Directions', 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.4, game.config.height/1.45, 'square-font', 'L for Level Select', 18).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
         
     }
     update() {
@@ -48,6 +51,10 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
           // direction
           this.scene.start('directionScene')    
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyL)) {
+          // level select
+          this.scene.start('LevelSelectScene')    
         }
       }
 }
