@@ -15,7 +15,7 @@ class Load2 extends Phaser.Scene {
         this.load.image('ball', 'ball.png')
         this.load.image('enemy-left', 'enemy-l-128.png')
         this.load.image('enemy-right', 'enemy-r-128.png')
-        this.load.image('platform', 'platform.png')
+        this.load.image('platform', 'platform1.png')
         this.load.audio('splash-music', './assets/splash.mp3')
         this.load.audio('shoot-music', './assets/shoot.mp3')
         this.load.audio('background-music', './assets/background.mp3')

@@ -151,13 +151,15 @@ class LevelTwo extends Phaser.Scene {
         this.enemy11.body.setVelocityX(25)
 
         // Platform1
-        this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(0.3);
+        this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(1);
+        this.platform1.body.setSize(50,50)
         this.platform1.body.setImmovable(true)
         this.platform1.body.setAllowGravity(false)
         this.platform1.body.setVelocityX(50)        
 
         //Platform2
-        this.platform2 = this.physics.add.sprite(Platform2Spawn.x, Platform2Spawn.y, 'platform').setScale(0.3);
+        this.platform2 = this.physics.add.sprite(Platform2Spawn.x, Platform2Spawn.y, 'platform').setScale(1);
+        this.platform2.body.setSize(50,50)
         this.platform2.body.setImmovable(true)
         this.platform2.body.setAllowGravity(false)
         this.platform2.body.setVelocityX(50)
