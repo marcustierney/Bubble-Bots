@@ -14,9 +14,9 @@ class Complete1 extends Phaser.Scene {
         this.add.bitmapText(game.config.width/2, game.config.height/2.4, 'score-font', `SCORE ${finalScore}`, 18).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/2, 'score-font', `HI SCORE ${highScore1}`, 18).setOrigin(0.5)
 
-        this.add.bitmapText(game.config.width/2, game.config.height/1.6, 'square-font', 'Press SPACE To Continue', 20).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/1.4, 'square-font', 'Press R to Restart', 20).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'square-font', 'Press M for Menu', 20).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.6, 'text-font', 'Press SPACE To Continue', 25).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.4, 'text-font', 'Press R to Restart', 25).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'text-font', 'Press M for Menu', 25).setOrigin(0.5)
         
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)

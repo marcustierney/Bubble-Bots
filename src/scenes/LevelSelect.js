@@ -7,12 +7,11 @@ class LevelSelect extends Phaser.Scene {
       this.OneComplete = this.registry.get("OneComplete") || 0; // Default to 0 if not set
       // sprites
       this.add.image(game.config.width/2, game.config.height/2, 'bubble-menu').setOrigin(0.5,0.5).setScale(0.2)
-      //this.add.image(game.config.width/2, game.config.height/2, 'robot-menu').setOrigin(0.53,0.456);
  
       // display menu text
-      this.add.bitmapText(game.config.width/2, game.config.height/4, 'square-font', 'Level Select', 40).setOrigin(0.5)
-      this.add.bitmapText(game.config.width/2, game.config.height/2, 'square-font', 'Level One', 18).setOrigin(0.5)
-      this.levelTwoText = this.add.bitmapText(game.config.width/2, game.config.height/1.5, 'square-font', 'Level Two', 18).setOrigin(0.5)
+      this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'Level Select', 45).setOrigin(0.5)
+      this.add.bitmapText(game.config.width/2, game.config.height/2, 'text-font', 'Level One', 25).setOrigin(0.5)
+      this.levelTwoText = this.add.bitmapText(game.config.width/2, game.config.height/1.5, 'text-font', 'Level Two', 25).setOrigin(0.5)
       this.selector = this.add.image(game.config.width/2, game.config.height/2, 'select-icon').setOrigin(0.5,0.5).setScale(0.3);
       
       if (this.OneComplete === 0) {

@@ -12,9 +12,9 @@ class Menu extends Phaser.Scene {
         this.load.image('select-icon', './assets/select-icon.png')
         // load bitmap font
         this.load.bitmapFont('bubble-font', 'assets/bubble-font.png', 'assets/bubble-font.xml')
-        this.load.bitmapFont('square-font', 'assets/square-font.png', 'assets/square-font.xml')
         this.load.bitmapFont('score-font', 'assets/score.png', 'assets/score.xml')
         this.load.bitmapFont('over-font', 'assets/over.png', 'assets/over.xml')
+        this.load.bitmapFont('text-font', 'assets/text.png', 'assets/text.xml')
 
         // load music
         this.load.audio('splash-music', './assets/splash.mp3')
@@ -33,8 +33,8 @@ class Menu extends Phaser.Scene {
         // display menu text
         this.add.bitmapText(game.config.width/1.35, game.config.height/3.5, 'bubble-font', 'BUBBLE', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.42, game.config.height/1.25, 'square-font', 'Press SPACE to Play', 18).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.4, game.config.height/1.1, 'square-font', 'and D for Directions', 18).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.42, game.config.height/1.26, 'text-font', 'Press SPACE to Play', 28).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.4, game.config.height/1.12, 'text-font', 'and D for Directions', 28).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     

@@ -1,3 +1,5 @@
+// Bubble Bots by Bhavya Anil and Marcus Tierney
+
 let config = {
     type: Phaser.AUTO,
     width: 320,
