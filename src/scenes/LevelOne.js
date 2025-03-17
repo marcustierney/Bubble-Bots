@@ -67,7 +67,6 @@ class LevelOne extends Phaser.Scene {
         this.robot = this.physics.add.sprite(30, 210, 'robot-sheet', 0).setScale(.9)
         this.robot.body.setCollideWorldBounds(true)
         this.robot.body.setSize(18,50)
-        //this.robot.body.setScale(.3)
         this.robot.body.setGravityY(this.GRAVITY) // Apply gravity
         this.robot.body.setMaxVelocity(this.VEL, 400) // Max speed
         this.robot.body.setDamping(true) // Enable damping
@@ -219,7 +218,6 @@ class LevelOne extends Phaser.Scene {
 
     levelComplete() {
         // Update the high score if the current score is higher
-        console.log(this.enemy3.x)
         if (this.score > this.highScore1) {
             this.highScore1 = this.score;
             this.registry.set('highScore1', this.highScore1); // Store the new high score
@@ -231,6 +229,7 @@ class LevelOne extends Phaser.Scene {
     
    shootBall() {
         let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.2)
+        ball.body.setSize(50, 50)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false
@@ -272,12 +271,14 @@ class LevelOne extends Phaser.Scene {
     shootEnemy3Balls() {
         // Shoot a ball to the right
         let ballRight = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        ballRight.body.setSize(50, 50);
         ballRight.body.setCollideWorldBounds(true);
         ballRight.body.allowGravity = false;
         ballRight.setVelocityX(150); 
         ballRight.startX = this.enemy3.x;
         // Shoot a ball to the left
         let ballLeft = this.balls.create(this.enemy3.x, this.enemy3.y, 'ball-enemy').setScale(0.2);
+        ballLeft.body.setSize(50, 50);
         ballLeft.body.setCollideWorldBounds(true);
         ballLeft.body.allowGravity = false;
         ballLeft.setVelocityX(-150); 

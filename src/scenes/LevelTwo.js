@@ -71,8 +71,8 @@ class LevelTwo extends Phaser.Scene {
         
         // Add robot
         this.robot = this.physics.add.sprite(30, 315, 'robot-sheet', 0).setScale(.9)
+        this.robot.body.setSize(18,50)
         this.robot.body.setCollideWorldBounds(true)
-        this.robot.body.setSize(32,50)
         this.robot.body.setGravityY(this.GRAVITY) // Apply gravity
         this.robot.body.setMaxVelocity(this.VEL, 400) // Max speed
         this.robot.body.setDamping(true) // Enable damping
@@ -121,11 +121,10 @@ class LevelTwo extends Phaser.Scene {
 
         //Enemy9
         this.enemy9 = this.physics.add.sprite(Enemy9Spawn.x, Enemy9Spawn.y, 'enemy-left', 0).setScale(.5)
-        this.enemy7.body.setSize(63,70);
+        this.enemy9.body.setSize(63,70);
         this.enemy9.body.setOffset(0, 0);
-        this.enemy9.body.setCollideWorldBounds(true);
-        this.enemy9.body.setGravityY(this.GRAVITY);
-        this.enemy9.body.setVelocityX(25)
+        this.enemy9.body.setCollideWorldBounds(true)
+        this.enemy9.body.setVelocityY(100)
 
         //Enemy10
         this.enemy10 = this.physics.add.sprite(Enemy10Spawn.x, Enemy10Spawn.y, 'enemy-left', 0).setScale(.5)
@@ -151,15 +150,13 @@ class LevelTwo extends Phaser.Scene {
         this.enemy11.body.setVelocityX(25)
 
         // Platform1
-        this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(1);
-        this.platform1.body.setSize(50,50)
+        this.platform1 = this.physics.add.sprite(Platform1Spawn.x, Platform1Spawn.y, 'platform').setScale(.3);
         this.platform1.body.setImmovable(true)
         this.platform1.body.setAllowGravity(false)
         this.platform1.body.setVelocityX(50)        
 
         //Platform2
-        this.platform2 = this.physics.add.sprite(Platform2Spawn.x, Platform2Spawn.y, 'platform').setScale(1);
-        this.platform2.body.setSize(50,50)
+        this.platform2 = this.physics.add.sprite(Platform2Spawn.x, Platform2Spawn.y, 'platform').setScale(.3);
         this.platform2.body.setImmovable(true)
         this.platform2.body.setAllowGravity(false)
         this.platform2.body.setVelocityX(50)
@@ -172,8 +169,6 @@ class LevelTwo extends Phaser.Scene {
         this.physics.add.collider(this.robot, terrain)
         this.physics.add.collider(this.robot, lava, this.respawnRobot, null, this)
         this.physics.add.collider(this.robot, door, this.levelComplete, null, this)
-        //this.physics.add.collider(this.platform1, paths, this.platformMovement, null, this)
-        //this.physics.add.collider(this.platform2, paths, this.platformMovement, null, this)
         this.physics.add.collider(this.enemy4, terrain)
         this.physics.add.collider(this.enemy5, terrain)
         this.physics.add.collider(this.enemy6, terrain)
@@ -194,7 +189,6 @@ class LevelTwo extends Phaser.Scene {
         this.physics.add.collider(this.enemy5, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy6, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy7, paths, this.enemyMovement, null, this)
-        this.physics.add.collider(this.enemy9, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy10, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy11, paths, this.enemyMovement, null, this)
         this.physics.add.collider(this.enemy4, paths, () => {
@@ -210,7 +204,7 @@ class LevelTwo extends Phaser.Scene {
             this.enemyMovement(this.enemy7);
         });
         this.physics.add.collider(this.enemy9, paths, () => {
-            this.enemyMovement(this.enemy9);
+            this.flyingEnemyMovement(this.enemy9);
         });
         this.physics.add.collider(this.enemy10, paths, () => {
             this.enemyMovement(this.enemy10);
@@ -270,7 +264,7 @@ class LevelTwo extends Phaser.Scene {
         }
 
         // Jumping 
-        if (this.cursors.up.isDown && this.robot.body.blocked.down) {
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.robot.body.blocked.down) {
             this.robot.body.setVelocityY(this.JUMP_VEL) 
         }
         if (this.cursors.right.isDown) {
@@ -328,6 +322,7 @@ class LevelTwo extends Phaser.Scene {
     
    shootBall() {
         let ball = this.balls.create(this.robot.x, this.robot.y, 'ball').setScale(0.2)
+        ball.body.setSize(50, 50)
         ball.body.setCollideWorldBounds(true)
         ball.body.onWorldBounds = true
         ball.body.allowGravity = false
@@ -335,6 +330,7 @@ class LevelTwo extends Phaser.Scene {
 
         ball.startX = this.robot.x
     }
+
     enemyMovement(enemy) {
         if (this.EVEL > 0) {
             enemy.setTexture('enemy-left')
@@ -345,6 +341,18 @@ class LevelTwo extends Phaser.Scene {
         this.EVEL = -this.EVEL
         enemy.body.setVelocityX(this.EVEL)  
    }
+
+   flyingEnemyMovement(enemy) {
+    /*if (this.EVEL > 0) {
+        enemy.setTexture('enemy-up)
+    }
+    else if (this.EVEL < 0) {
+        enemy.setTexture('enemy-down')
+    }*/
+    this.EVEL = -this.EVEL
+    enemy.body.setVelocityY(this.EVEL)  
+    }
+
     enemyHit (ball, enemy) {
         this.score += 100;
         this.scoreText.setText(`${this.score}`);
@@ -370,12 +378,14 @@ class LevelTwo extends Phaser.Scene {
         // Shoot a ball to the right
         let ballRight = this.balls.create(enemy.x, enemy.y, 'ball-enemy').setScale(0.2);
         ballRight.body.setCollideWorldBounds(true);
+        ballRight.body.setSize(50, 50);
         ballRight.body.allowGravity = false;
         ballRight.setVelocityX(150); 
         ballRight.startX = enemy.x;
         // Shoot a ball to the left
         let ballLeft = this.balls.create(enemy.x, enemy.y, 'ball-enemy').setScale(0.2);
         ballLeft.body.setCollideWorldBounds(true);
+        ballLeft.body.setSize(50, 50);
         ballLeft.body.allowGravity = false;
         ballLeft.setVelocityX(-150); 
         ballLeft.startX = enemy.x
