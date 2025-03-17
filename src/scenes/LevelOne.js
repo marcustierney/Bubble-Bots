@@ -66,10 +66,12 @@ class LevelOne extends Phaser.Scene {
         // Add robot
         this.robot = this.physics.add.sprite(30, 210, 'robot-sheet', 0).setScale(.9)
         this.robot.body.setCollideWorldBounds(true)
-        this.robot.body.setSize(32,50)
+        this.robot.body.setSize(18,50)
+        //this.robot.body.setScale(.3)
         this.robot.body.setGravityY(this.GRAVITY) // Apply gravity
         this.robot.body.setMaxVelocity(this.VEL, 400) // Max speed
         this.robot.body.setDamping(true) // Enable damping
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)   
 
         // Apply strong drag to stop movement faster
         this.robot.body.setDragX(this.DRAG)
@@ -173,7 +175,7 @@ class LevelOne extends Phaser.Scene {
         }
 
         // Jumping 
-        if (this.cursors.up.isDown && this.robot.body.blocked.down) {
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.robot.body.blocked.down) {
             this.robot.body.setVelocityY(this.JUMP_VEL) 
         }
         if (this.cursors.right.isDown) {
