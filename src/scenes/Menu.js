@@ -20,7 +20,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('splash-music', './assets/splash.mp3')
         this.load.audio('shoot-music', './assets/shoot.mp3')
         this.load.audio('background-music', './assets/background.mp3')
-        this.load.audio('background-music1', './assets/background1.mp3')
+        this.load.audio('reg-music', './assets/background1.mp3')
         
     }
     
@@ -33,12 +33,16 @@ class Menu extends Phaser.Scene {
         // display menu text
         this.add.bitmapText(game.config.width/1.35, game.config.height/3.5, 'bubble-font', 'BUBBLE', 45).setOrigin(0.5)
         this.add.bitmapText(game.config.width/1.35, game.config.height/2.2, 'bubble-font', 'BOTS', 45).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.42, game.config.height/1.26, 'text-font', 'Press SPACE to Play', 28).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/1.4, game.config.height/1.12, 'text-font', 'and D for Directions', 28).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.42, game.config.height/1.26, 'text-font', 'Press SPACE to Play', 26).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/1.4, game.config.height/1.12, 'text-font', 'and D for Directions', 26).setOrigin(0.5)
        
         // define keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)     
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+
+        // music
+        this.regMusic = this.sound.add('reg-music', {volume: 0.1})
+        this.regMusic.play()
         
     }
     update() {
@@ -48,10 +52,12 @@ class Menu extends Phaser.Scene {
         }*/
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
           // direction
+          this.regMusic.stop()
           this.scene.start('directionScene')    
         }
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
           // level select
+          this.regMusic.stop()
           this.scene.start('LevelSelectScene')    
         }
       }

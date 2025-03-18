@@ -20,13 +20,19 @@ class Complete2 extends Phaser.Scene {
         // define keys
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+
+        // music
+        this.regMusic = this.sound.add('reg-music', {volume: 0.1})
+        this.regMusic.play()
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyM)) {
+            this.regMusic.stop()
             this.scene.start('menuScene')
         }
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.regMusic.stop()
             this.scene.start('LevelTwoScene')
         }
     }

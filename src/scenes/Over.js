@@ -11,8 +11,8 @@ class Over extends Phaser.Scene {
         this.add.bitmapText(game.config.width/2, game.config.height/4, 'over-font', 'GAME OVER', 50).setOrigin(0.5)
 
         // Instructions for restarting the game
-        this.add.bitmapText(game.config.width/2, game.config.height/2.05, 'text-font', 'Press R to Restart', 38).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/1.6, 'text-font', 'Press M for Menu', 38).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/2.05, 'text-font', 'Press R to Restart', 34).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.6, 'text-font', 'Press M for Menu', 34).setOrigin(0.5)
 
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)

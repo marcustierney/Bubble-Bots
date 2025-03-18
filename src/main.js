@@ -1,5 +1,8 @@
 // Bubble Bots by Bhavya Anil and Marcus Tierney
 
+// Phaser's major components used: physics systems, cameras, text objects, timers,
+//                                 tilemaps, animation manager, tween manager
+
 let config = {
     type: Phaser.AUTO,
     width: 320,
@@ -10,7 +13,7 @@ let config = {
     physics: {
       default: 'arcade',
       arcade: {
-          debug: true,
+          debug: false,
       } 
     },
     zoom: 2,

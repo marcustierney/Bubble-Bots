@@ -317,6 +317,7 @@ class LevelTwo extends Phaser.Scene {
             this.highScore2Text.setText(`HI SCORE-${this.highScore2}`);
         }
         this.registry.set('finalScore', this.score);
+        this.backgroundMusic.stop()
         this.scene.start('complete2Scene')
     }
     

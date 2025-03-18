@@ -224,6 +224,7 @@ class LevelOne extends Phaser.Scene {
             this.highScore1Text.setText(`HI SCORE-${this.highScore1}`);
         }
         this.registry.set('finalScore', this.score);
+        this.backgroundMusic.stop()
         this.scene.start('complete1Scene')
     }
     
