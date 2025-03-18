@@ -435,6 +435,19 @@
                  "id":9
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":200,
+                         "tileid":12
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":13
+                        }, 
+                        {
+                         "duration":200,
+                         "tileid":14
+                        }],
                  "id":12,
                  "properties":[
                         {
