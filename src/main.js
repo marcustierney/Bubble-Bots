@@ -3,6 +3,9 @@
 // Phaser's major components used: physics systems, cameras, text objects, timers,
 //                                 tilemaps, animation manager, tween manager
 
+// Style: We used the tween manager to grow and shrink the size of the bubbles while randomizing their colors.
+//        This aspect isn't present in the original game, but we thought it would be creative and visually pleasing to an otherwise structured game.
+
 let config = {
     type: Phaser.AUTO,
     width: 320,

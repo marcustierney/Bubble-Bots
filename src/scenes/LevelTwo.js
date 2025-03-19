@@ -365,12 +365,6 @@ class LevelTwo extends Phaser.Scene {
    }
 
    flyingEnemyMovement(enemy) {
-    /*if (this.EVEL > 0) {
-        enemy.setTexture('enemy-up)
-    }
-    else if (this.EVEL < 0) {
-        enemy.setTexture('enemy-down')
-    }*/
     this.EVEL = -this.EVEL
     enemy.body.setVelocityY(this.EVEL)  
     }
