@@ -10,7 +10,7 @@ class Direction extends Phaser.Scene {
         // display directions text
         this.add.bitmapText(game.config.width/2, game.config.height/4, 'bubble-font', 'DIRECTIONS', 50).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/2.2, 'text-font', 'Use ARROW keys to Move', 32).setOrigin(0.5)
-        this.add.bitmapText(game.config.width/2, game.config.height/1.75, 'text-font', 'Press A to shoot Bubbles', 32).setOrigin(0.5)
+        this.add.bitmapText(game.config.width/2, game.config.height/1.75, 'text-font', 'Press A to shoot Enemies', 32).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/1.35, 'text-font', 'Press M for Menu', 25).setOrigin(0.5)
         this.add.bitmapText(game.config.width/2, game.config.height/1.2, 'text-font', 'and C for Credits', 25).setOrigin(0.5)
 

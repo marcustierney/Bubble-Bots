@@ -237,6 +237,27 @@ class LevelOne extends Phaser.Scene {
         ball.setVelocityX(this.DIR)
 
         ball.startX = this.robot.x
+
+        const colors = [
+           0xFFB6FE,
+           0xCFB6FF,
+           0x93FEF2,
+           0xFFFCB6,
+           0xFFC0B6,
+        ]
+
+        const randomColor = Phaser.Utils.Array.GetRandom(colors) // Shoots bubbles in random color order
+        ball.setTint(randomColor)
+
+        this.tweens.add({   // Shrinks and grows bubble size
+            targets: ball,
+            scaleX: 0.35,  
+            scaleY: 0.35,  
+            duration: 250,  
+            yoyo: true,  
+            repeat: -1,  
+            ease: 'Sine.easeInOut', 
+        });
     }
     enemyMovement(enemy) {
         if (this.EVEL > 0) {
