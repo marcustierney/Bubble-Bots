@@ -5,6 +5,7 @@
 
 // Style: We used the tween manager to grow and shrink the size of the bubbles while randomizing their colors.
 //        This aspect isn't present in the original game, but we thought it would be creative and visually pleasing to an otherwise structured game.
+//        Every asset was hand-drawn as well, in addition to the menu screen, which allows our game to be as unique as possible while aligning to the original game.
 
 let config = {
     type: Phaser.AUTO,
